@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YSL MYSLF - Luxury Fragrance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Tambahan CSS internal untuk memastikan tampilan brand-story rapi */
+        .brand-story {
+            padding: 80px 0;
+            background-color: #fff;
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .story-text {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar d-flex justify-content-end align-items-center px-4 py-2 border-bottom bg-white">
+        <div class="me-3"><img src="https://flagcdn.com/w20/id.png" width="16" alt="ID"> IDR</div>
+        <div class="auth"><a href="login.html" class="text-decoration-none text-dark">LOGIN / REGISTER</a></div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">YSL</a>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link text-danger" href="index.html">BERANDA</a></li>
+                    <li class="nav-item"><a class="nav-link" href="produk.html">SEMUA PRODUK</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">ABOUT US</a></li>
+                </ul>
+                <div class="d-flex gap-3 align-items-center">
+                    <input type="text" class="form-control form-control-sm rounded-pill" placeholder="Cari parfum..." style="font-size: 12px; width: 150px;">
+                    <a href="checkout.html" class="text-dark"><span>🛒</span></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section overflow-hidden">
+        <div class="luna-bg-text animate__animated animate__fadeInRight">LUNA</div>
+        <div class="container text-center text-lg-start">
+            <div class="row align-items-center">
+                <div class="col-lg-6 position-relative animate__animated animate__fadeInLeft" style="z-index: 3;">
+                    <h5 class="text-uppercase tracking-widest mb-3">New Arrival</h5>
+                    <h1 class="display-2 fw-bold mb-4">Luna New Color</h1>
+                    <a href="produk.html" class="btn btn-dark btn-lg rounded-pill px-5 py-3 shadow">Shop Now</a>
+                </div>
+                <div class="col-lg-6 animate__animated animate__zoomIn">
+                    <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?w=600" alt="Fragrance" class="img-fluid hero-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bagian Brand Story -->
+    <section class="brand-story">
+        <div class="container text-center">
+            <h5 class="bm-label mb-3">MANIFESTO</h5>
+            <h2 class="display-4 fw-bold mb-4" style="font-family: 'Playfair Display', serif;">The Essence of MYSLF</h2>
+            <div class="story-text text-muted mb-5">
+                <p class="lead text-dark mb-4">"Kami tidak hanya menciptakan parfum, kami menciptakan karakter."</p>
+                <p>Yves Saint Laurent Beauty mempersembahkan MYSLF, wewangian yang merayakan proses menjadi diri sendiri. Perpaduan antara bahan baku premium dunia dan seni alkimia modern untuk pengalaman sensorik yang autentik.</p>
+            </div>
+
+            <div class="row g-4 mt-5">
+                <div class="col-md-4">
+                    <span class="feature-icon">🌿</span>
+                    <h5 class="fw-bold">Sustainable Ingredients</h5>
+                    <p class="small text-muted">Bahan baku premium yang dipanen secara etis dari Tunisia hingga Indonesia.</p>
+                </div>
+                <div class="col-md-4 border-start border-end">
+                    <span class="feature-icon">💎</span>
+                    <h5 class="fw-bold">Refillable Design</h5>
+                    <p class="small text-muted">Botol yang dirancang untuk dapat diisi ulang guna menjaga keberlanjutan lingkungan.</p>
+                </div>
+                <div class="col-md-4">
+                    <span class="feature-icon">✨</span>
+                    <h5 class="fw-bold">Long Lasting Scent</h5>
+                    <p class="small text-muted">Ketahanan aroma maksimal hingga 12 jam untuk menemani setiap aktivitas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-5 text-center">
+        <div class="container">
+            <h3 class="navbar-brand text-white mb-4">YSL</h3>
+            <p class="small opacity-50 mb-0">© 2026 Yves Saint Laurent Fragrance Official. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
