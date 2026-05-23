@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 02 — Danganronpa Card Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --salmon: #f2a599;
+            --salmon-light: #f7c4bc;
+            --salmon-dark: #e8846e;
+            --coral-red: #d94f3a;
+            --lime: #b8d43a;
+            --lime-dark: #8fa82a;
+            --ink: #1a1008;
+            --white: #fffef9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--salmon);
+            color: var(--ink);
+            font-family: 'DM Mono', monospace;
+            overflow-x: hidden;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(200,60,40,0.18) 1.5px, transparent 1.5px);
+            background-size: 18px 18px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .starburst { position: absolute; z-index: 0; pointer-events: none; }
+        header, main, footer { position: relative; z-index: 1; }
+
+        header {
+            background: var(--ink);
+            padding: 0.6rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 4px solid var(--lime);
+        }
+        .logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--lime); letter-spacing: 3px; }
+        .header-meta { font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--salmon-light); }
+
+        .back-bar { padding: 1.5rem 3rem; display: flex; align-items: center; gap: 1rem; position: relative; z-index: 1; }
+        .btn-back {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--ink); color: var(--lime);
+            font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; letter-spacing: 4px;
+            padding: 0.6rem 1.4rem; text-decoration: none; border: 3px solid var(--ink);
+            box-shadow: 4px 4px 0 var(--lime-dark); transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .btn-back:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--lime-dark); }
+        .btn-back::before { content: '←'; font-size: 1.1rem; }
+        .project-breadcrumb { font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.6; }
+
+        /* PROJECT HEADER AREA */
+        .project-intro {
+            padding: 0.5rem 3rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .project-eyebrow {
+            display: inline-block; background: var(--coral-red); color: var(--white);
+            font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 5px;
+            padding: 0.3rem 1rem; margin-bottom: 0.8rem; transform: rotate(-1deg);
+        }
+        .project-title-big {
+            font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 6vw, 5rem);
+            line-height: 0.95; color: var(--ink); margin-bottom: 0.4rem;
+        }
+        .project-title-big span { color: var(--white); -webkit-text-stroke: 2px var(--ink); }
+        .project-sub {
+            background: var(--lime); color: var(--ink);
+            font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 5px;
+            padding: 0.3rem 1rem; border: 2px solid var(--ink); display: inline-block; margin-bottom: 1.2rem;
+        }
+        .desc-card {
+            background: var(--white); border: 3px solid var(--ink); padding: 1.2rem 1.5rem;
+            box-shadow: 6px 6px 0 var(--ink); transform: rotate(0.3deg);
+            font-size: 0.82rem; line-height: 1.9; max-width: 680px;
+        }
+
+        /* CARDS SECTION */
+        .cards-section { padding: 1.5rem 3rem 4rem; position: relative; z-index: 1; }
+        .section-heading {
+            font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 6px;
+            color: var(--ink); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;
+        }
+        .section-heading::after {
+            content: ''; flex: 1; height: 3px;
+            background: repeating-linear-gradient(90deg, var(--ink) 0, var(--ink) 12px, transparent 12px, transparent 20px);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* CHARACTER CARD — retro-stamp style */
+        .char-card {
+            background: var(--white);
+            border: 3px solid var(--ink);
+            box-shadow: 5px 5px 0 var(--ink);
+            overflow: hidden;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .char-card:hover { transform: translate(-3px,-3px); box-shadow: 8px 8px 0 var(--ink); }
+
+        .char-img {
+            width: 100%; height: 220px;
+            object-fit: cover;
+            filter: saturate(0.75) contrast(1.1);
+            border-bottom: 3px solid var(--ink);
+        }
+
+        .char-header {
+            background: var(--ink);
+            padding: 0.5rem 1rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .char-name {
+            font-family: 'Bebas Neue', sans-serif; font-size: 1.15rem; letter-spacing: 2px;
+            color: var(--salmon-light);
+        }
+        .char-num {
+            font-family: 'Bebas Neue', sans-serif; font-size: 0.75rem; letter-spacing: 2px;
+            color: var(--lime); opacity: 0.7;
+        }
+
+        .stat-box { padding: 0.8rem 1rem 1rem; }
+        .stat-row { margin-bottom: 0.7rem; }
+        .stat-label {
+            font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase;
+            color: var(--coral-red); margin-bottom: 3px;
+        }
+        .stat-track {
+            background: rgba(0,0,0,0.1);
+            height: 8px; border-radius: 0; overflow: hidden;
+            border: 1.5px solid var(--ink);
+        }
+        .stat-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--coral-red), var(--lime));
+            transition: width 1.2s cubic-bezier(0.22,1,0.36,1);
+        }
+
+        footer {
+            background: var(--ink); padding: 2rem 3rem;
+            display: flex; align-items: center; justify-content: space-between;
+            border-top: 4px solid var(--lime);
+        }
+        .foot-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 4px; color: var(--lime); }
+        .foot-meta { font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--salmon-light); text-align: right; line-height: 1.9; }
+
+        @media (max-width: 768px) {
+            .cards-grid { grid-template-columns: 1fr 1fr; }
+            .back-bar, .project-intro, .cards-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+            footer { flex-direction: column; gap: 1rem; }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .back-bar { animation: fadeUp 0.4s ease 0.05s both; }
+        .project-intro { animation: fadeUp 0.5s ease 0.15s both; }
+    </style>
+</head>
+<body>
+
+<!-- STARBURST -->
+<svg class="starburst" style="top:-30px;right:8%;width:180px;opacity:0.5" viewBox="0 0 200 200">
+    <polygon points="100,0 112,75 190,40 130,100 190,160 112,125 100,200 88,125 10,160 70,100 10,40 88,75" fill="#b8d43a"/>
+</svg>
+<svg class="starburst" style="bottom:25%;left:-35px;width:130px;opacity:0.3" viewBox="0 0 200 200">
+    <polygon points="100,0 112,75 190,40 130,100 190,160 112,125 100,200 88,125 10,160 70,100 10,40 88,75" fill="#d94f3a"/>
+</svg>
+
+<!-- HEADER -->
+<header>
+    <div class="logo">Report Siswa</div>
+    <div class="header-meta">TIK · Kelas XI · Semester Genap</div>
+</header>
+
+<!-- BACK -->
+<div class="back-bar">
+    <a href="index.html" class="btn-back">Kembali ke Beranda</a>
+    <span class="project-breadcrumb">Project 02 / 03</span>
+</div>
+
+<!-- INTRO -->
+<div class="project-intro">
+    <div class="project-eyebrow">Project 02 — Card Game</div>
+    <h1 class="project-title-big">Danganronpa <span>THH</span></h1>
+    <div class="project-sub">Final Characters</div>
+    <div class="desc-card">
+        <p>Halaman kartu karakter dari game Danganronpa Trigger Happy Havoc (THH). Menampilkan 5 karakter dengan dark theme dan statistik visual per karakter menggunakan progress bar animasi.</p>
+        <br>
+        <p style="font-size:0.78rem; opacity:0.7;">Teknologi: HTML · CSS · JavaScript</p>
+    </div>
+</div>
+
+<!-- CARDS -->
+<div class="cards-section">
+    <div class="section-heading">Karakter</div>
+    <div class="cards-grid">
+
+        <div class="char-card">
+            <img class="char-img" src="https://i.pinimg.com/736x/07/b8/74/07b874155555d38627412c16b5e01bd3.jpg" alt="Makoto Naegi">
+            <div class="char-header">
+                <span class="char-name">Makoto Naegi</span>
+                <span class="char-num">01</span>
+            </div>
+            <div class="stat-box">
+                <div class="stat-row">
+                    <div class="stat-label">Hope</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:95%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Influence</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:70%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Focus</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:60%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Survival</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:90%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Skills</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:55%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="char-card">
+            <img class="char-img" src="https://i.pinimg.com/1200x/aa/ee/22/aaee22c13e4e549ecc7d2d6281e5e93a.jpg" alt="Kyoko Kirigiri">
+            <div class="char-header">
+                <span class="char-name">Kyoko Kirigiri</span>
+                <span class="char-num">02</span>
+            </div>
+            <div class="stat-box">
+                <div class="stat-row">
+                    <div class="stat-label">Hope</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:85%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Influence</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:90%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Focus</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:95%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Survival</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:80%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Skills</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:94%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="char-card">
+            <img class="char-img" src="https://i.pinimg.com/736x/8a/95/5d/8a955df4f2ad9c2a22ac9192f1caa1ea.jpg" alt="Byakuya Togami">
+            <div class="char-header">
+                <span class="char-name">Byakuya Togami</span>
+                <span class="char-num">03</span>
+            </div>
+            <div class="stat-box">
+                <div class="stat-row">
+                    <div class="stat-label">Hope</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:40%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Influence</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:95%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Focus</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:88%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Survival</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:75%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Skills</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:82%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="char-card">
+            <img class="char-img" src="https://i.pinimg.com/736x/83/54/04/835404ecb7f8e0ddd17d9ac7e7934c34.jpg" alt="Aoi Asahina">
+            <div class="char-header">
+                <span class="char-name">Aoi Asahina</span>
+                <span class="char-num">04</span>
+            </div>
+            <div class="stat-box">
+                <div class="stat-row">
+                    <div class="stat-label">Hope</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:72%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Influence</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:65%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Focus</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:55%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Survival</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:78%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Skills</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:60%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="char-card">
+            <img class="char-img" src="https://i.pinimg.com/736x/e7/a0/a9/e7a0a92c4ed75b9c5bd2c4b89bc100bc.jpg" alt="Yasuhiro Hagakure">
+            <div class="char-header">
+                <span class="char-name">Yasuhiro Hagakure</span>
+                <span class="char-num">05</span>
+            </div>
+            <div class="stat-box">
+                <div class="stat-row">
+                    <div class="stat-label">Hope</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:30%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Influence</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:50%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Focus</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:20%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Survival</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:65%"></div></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Skills</div>
+                    <div class="stat-track"><div class="stat-fill" style="width:35%"></div></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="foot-brand">Project 02</div>
+    <div class="foot-meta">
+        Tio Ramos Tampubolon · XIA4<br>
+        Kolese Kanisius · 2026
+    </div>
+</footer>
+
+<script>
+    console.log('%c🎸 Project 02 — Danganronpa THH Card Game', 'font-size:18px; font-weight:bold; color:#b8d43a; background:#1a1008; padding:6px 12px;');
+    console.log('%cTio Ramos Tampubolon — XIA4 Kolese Kanisius', 'font-size:13px; color:#f2a599;');
+    alert('Selamat datang di halaman Danganronpa THH! 🎮');
+</script>
+</body>
+</html>
